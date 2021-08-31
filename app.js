@@ -10,6 +10,7 @@ app.listen(3000, function() {
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+app.set('view engine', 'ejs');
 
 //URL Routing
 app.get('/', function(request, response){
@@ -23,5 +24,6 @@ app.get('/main', function(request, response){
 app.post('/email_post', function(request, response){
     //get : req.param('email');
     console.log(request.body.email);
-    response.send("<h1>welcome!" + request.body.email + " </h1>");
+    //response.send("<h1>welcome!" + request.body.email + " </h1>");
+    response.render('email.ejs', {'email' : request.body.email});
 })
