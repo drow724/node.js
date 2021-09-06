@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require("body-parser");
 var mysql = require("mysql");
 var cors = require("cors");
+var main = require("./router/main");
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -24,6 +25,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.set("view engine", "ejs");
+
+app.use("/main", main);
 
 //URL Routing
 app.get("/", function (request, response) {
