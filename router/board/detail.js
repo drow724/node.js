@@ -15,6 +15,9 @@ var connection = mysql.createConnection({
 
 router.get("/:id", function (request, response) {
   var userId = request.user;
+  if (!userId) {
+    response.redirect("/login");
+  }
   var id = request.params.id;
 
   var responseData = {};
