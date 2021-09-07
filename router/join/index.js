@@ -23,7 +23,15 @@ router.get("/", function (request, response) {
   response.render("join.ejs", { message: message });
 });
 
-//passport.serialize
+passport.serializeUser(function (id, done) {
+  console.log("passport session save : ", id);
+  done(null, id);
+});
+
+passport.deserializeUser(function (id, done) {
+  console.log("passport session get id : ", id);
+  done(null, id);
+});
 
 passport.use(
   "local-join",
