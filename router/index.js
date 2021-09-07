@@ -4,6 +4,8 @@ var router = express.Router();
 var path = require("path");
 var main = require("./main/main");
 var email = require("./email/email");
+var join = require("./join/index");
+
 //URL Routing
 router.get("/", function (request, response) {
   response.sendFile(path.join(__dirname, "../public/main.html"));
@@ -11,5 +13,6 @@ router.get("/", function (request, response) {
 
 router.use("/main", main);
 router.use("/email", email);
+router.use("/join", join);
 
 module.exports = router;
