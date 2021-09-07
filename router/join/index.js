@@ -24,19 +24,16 @@ router.post("/", function (request, response) {
   var name = body.name;
   var passwd = body.password;
 
+  var sql = { email: email, name: name, pw: passwd };
   var query = connection.query(
-    'insert into user (email,name,pw) values ("' +
-      email +
-      '", "' +
-      name +
-      '", "' +
-      passwd +
-      '")',
+    "insert into user set ?",
+    sql,
     function (error, rows) {
       if (error) {
         throw error;
       }
-      console.log("ok db insert");
+      console.log("ok db insert : ", rows.insertId, name);
+      response.render("welcome.ejs", { name: name, id: rows.insertId });
     }
   );
 });
