@@ -8,11 +8,11 @@ var LocalStrategy = require("passport-local").Strategy;
 
 // DATABASE SETTING
 var connection = mysql.createConnection({
-  host: "localhost",
-  port: 3308,
-  user: "root",
-  password: "password",
-  database: "wolfgang",
+  host: "34.64.253.179",
+  port: 3306,
+  user: "song",
+  password: "!!Aa119562",
+  database: "NodeJS",
 });
 connection.connect();
 
@@ -25,8 +25,8 @@ router.get("/", function (req, res) {
 
 //passport.serialize
 passport.serializeUser(function (user, done) {
-  console.log("passport session save : ", user.id);
-  done(null, user.id);
+  console.log("passport session save : ", user);
+  done(null, user);
 });
 
 passport.deserializeUser(function (id, done) {

@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Node.js 게시판</title>
+        <link rel="stylesheet" href="/css/ui.css">
+        <link rel="stylesheet" type="text/css" href="/css/semantic.min.css">
+
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
+
+        body>.grid {
+            height: 100%;
+        }
+
+        .image {
+            margin-top: -100px;
+        }
+
+        .column {
+            max-width: 1000px;
+        }
+
+        .view_btn {
+            cursor: pointer;
+        }
+
+    </style>
+    </head>
+    <body>
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <h2 class="ui teal image header">
+                    <%= board[0].title %>
+                </h2>
+                <form action="" method="post" class="ui large form">
+                    <div class="ui stacked segment">
+                        <div class="field">
+                           <h3><%= board[0].userId %> </h3>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <textarea readonly style="resize: none;" name="content" id="b_content" placeholder="게시글 내용" rows="8"><%= board[0].content %></textarea>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="ui error message"></div>
+    
+                </form>
+                <% if (userId.email === board[0].userId) { %> <a href='/remove/<%= board[0].id%>'><button class="ui fluid large teal submit button" style="margin: 0 50em 1em 0; padding: .78571429em 0em .78571429em;">삭제</button></a> <a href='/modify/<%= board[0].id%>'><button class="ui fluid large teal submit button" style="margin: 0 0 1em 0; padding: .78571429em 0em .78571429em;">수정</button></a> <% }  %>
+                
+                    
+                <a href="/main"><button class="ui fluid large teal submit button">뒤로가기</button></a>
+            </div>
+        </div>
+        </script>
+    </body>
+</html>
