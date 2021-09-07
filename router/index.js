@@ -7,6 +7,7 @@ var email = require("./email/email");
 var join = require("./join/index");
 var login = require("./login/index");
 var logout = require("./logout/index");
+var movie = require("./movie/index");
 //URL Routing
 router.get("/", function (request, response) {
   response.sendFile(path.join(__dirname, "../public/main.html"));
@@ -17,5 +18,6 @@ router.use("/email", email);
 router.use("/join", join);
 router.use("/login", login);
 router.use("/logout", logout);
+router.use("/movie", movie);
 
 module.exports = router;
