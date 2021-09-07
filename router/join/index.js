@@ -18,4 +18,27 @@ router.get("/", function (request, response) {
   response.sendFile(path.join(__dirname, "../../public/join.html"));
 });
 
+router.post("/", function (request, response) {
+  var body = request.body;
+  var email = body.email;
+  var name = body.name;
+  var passwd = body.password;
+
+  var query = connection.query(
+    'insert into user (email,name,pw) values ("' +
+      email +
+      '", "' +
+      name +
+      '", "' +
+      passwd +
+      '")',
+    function (error, rows) {
+      if (error) {
+        throw error;
+      }
+      console.log("ok db insert");
+    }
+  );
+});
+
 module.exports = router;
