@@ -6,6 +6,7 @@ var mysql = require("mysql");
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 
+// DATABASE SETTING
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3308,
@@ -13,23 +14,23 @@ var connection = mysql.createConnection({
   password: "password",
   database: "wolfgang",
 });
-
 connection.connect();
 
-router.get("/", function (request, response) {
-  var message;
-  var errorMessage = request.flash("error");
-  if (errorMessage) message = errorMessage;
-  response.render("login.ejs", { message: message });
+router.get("/", function (req, res) {
+  var msg;
+  var errMsg = req.flash("error");
+  if (errMsg) msg = errMsg;
+  res.render("login.ejs", { message: msg });
 });
 
-passport.serializeUser(function (id, done) {
-  console.log("passport session save : ", id);
-  done(null, id);
+//passport.serialize
+passport.serializeUser(function (user, done) {
+  console.log("passport session save : ", user.id);
+  done(null, user.id);
 });
 
 passport.deserializeUser(function (id, done) {
-  console.log("passport session get id : ", id);
+  console.log("passport session get id: ", id);
   done(null, id);
 });
 
@@ -45,22 +46,15 @@ passport.use(
       var query = connection.query(
         "select * from user where email=?",
         [email],
-        function (error, rows) {
-          if (error) return done(error);
+        function (err, rows) {
+          if (err) return done(err);
 
           if (rows.length) {
-            console.log("existed user");
-            return done(null, false, { message: "your email is already used" });
+            return done(null, { email: email, id: rows[0].UID });
           } else {
-            var sql = { email: email, pw: password };
-            var query = connection.query(
-              "insert into user set ?",
-              sql,
-              function (error, rows) {
-                if (error) throw error;
-                return done(null, { email: email, id: rows.insertId });
-              }
-            );
+            return done(null, false, {
+              message: "Incorrect email or password",
+            });
           }
         }
       );
@@ -68,13 +62,18 @@ passport.use(
   )
 );
 
-router.post(
-  "/",
-  passport.authenticate("local-join", {
-    successRedirect: "/main",
-    failureRedirect: "/join",
-    failureFlash: true,
-  })
-);
+router.post("/", function (req, res, next) {
+  passport.authenticate("local-login", function (err, user, info) {
+    if (err) res.status(500).json(err);
+    if (!user) return res.status(401).json(info.message);
+
+    req.logIn(user, function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.json(user);
+    });
+  })(req, res, next);
+});
 
 module.exports = router;
